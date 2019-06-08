@@ -1,0 +1,29 @@
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-size: 24px;
+}
+
+body {
+  background-color: black;
+}
+
+button {
+  margin: 5px;
+  height: 100px;
+  width: 300px;
+}
+
+#drum-set {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 100px;
+}
+
+#drum-set .drum-parts {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
