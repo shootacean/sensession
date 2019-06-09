@@ -1,19 +1,21 @@
 export default class {
   private audioContext: AudioContext;
 
-  bassSource;
-  bassSourceBuffer;
+  public bassSourceBuffer;
+  public snareSourceBuffer;
 
   constructor(sourceUrlList) {
     this.audioContext = new AudioContext();
-    this.setupSources(sourceUrlList).catch((error) => console.error(error));
+    this.setupSources(sourceUrlList)
+        .catch((error) => console.error(error));
   }
 
   async setupSources(sourceUrlList): Promise<any> {
     this.bassSourceBuffer = await this.fetchSourceBuffer(sourceUrlList.bassSource);
+    this.snareSourceBuffer = await this.fetchSourceBuffer(sourceUrlList.snareSource);
   }
 
-  play(source) {
+  play(source: AudioBufferSourceNode) {
     source.start(0);
   }
 
@@ -25,7 +27,7 @@ export default class {
   }
 
   async fetchSourceBuffer(url) {
-    const buffer: ArrayBuffer = await this.fetchAudioBuffer(url) as ArrayBuffer;
+    const buffer: ArrayBuffer = await this.downloadAudioBuffer(url) as ArrayBuffer;
     return await this.audioContext.decodeAudioData(buffer)
         .then((decoded) => {
           return decoded;
@@ -35,7 +37,7 @@ export default class {
         });
   }
 
-  async fetchAudioBuffer(url) {
+  async downloadAudioBuffer(url) {
     return await fetch(url)
         .then((response) => {
           return response.arrayBuffer();

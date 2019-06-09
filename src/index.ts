@@ -1,39 +1,31 @@
-import Audio from './audio';
-import DrumSet from "./drumSet";
+import * as DrumSet from "./drumSet";
 
-window.onload = () => {
+const drumSet: DrumSet.DrumSet = new DrumSet.DrumSet();
 
-  function playAudio() {
-    if (!drumSet.audio) {
-      const audio = new Audio({
-        bassSource: '/assets/audio/sensessionist_bass_drum.wav',
-      });
-      drumSet.setAudio(audio);
-    }
-    drumSet.playBass();
-  }
-
-  function setEventForPlay(element: HTMLElement) {
-    element.addEventListener('click', () => {
-      playAudio();
-    });
-  }
-
-  // Setup drum set
-  const drumSet: DrumSet = new DrumSet();
-  const playingDrumSet = document.getElementById('drum-set');
-  const bassButton = playingDrumSet.querySelectorAll('.bass');
-  bassButton.forEach((element: HTMLElement) => {
-    setEventForPlay(element);
+const setupMouseAndTap = () => {
+  document.getElementById('snare-drum').addEventListener('mousedown', (event) => {
+    drumSet.playSnare();
   });
+  document.getElementById('bass-drum').addEventListener('mousedown', (event) => {
+    drumSet.playBass();
+  });
+};
 
+const setupKeyboard = () => {
   document.addEventListener('keydown', (event) => {
     switch (event.key) {
+      case 'f':
+        drumSet.playSnare();
+        break;
       case 'b':
       case 'v':
-        playAudio();
+        drumSet.playBass();
         break;
     }
   });
+};
 
+window.onload = () => {
+  setupMouseAndTap();
+  setupKeyboard();
 };
